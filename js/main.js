@@ -1,3 +1,5 @@
 import {generatePhotos} from './data.js';
+import {renderPhotos} from './preview.js';
 
-generatePhotos();
+const photos = generatePhotos();
+renderPhotos(photos);
