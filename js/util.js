@@ -22,4 +22,6 @@ const makeArray = (length, callback) => Array.from({length: length}, (_, i) => c
 
 const getRandomArrayElement = (elements) => elements[getRandomNum(0, elements.length - 1)];
 
-export {getRandomNum, isCorrectLength, makeArray, getRandomArrayElement};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomNum, isCorrectLength, makeArray, getRandomArrayElement, isEscapeKey};
