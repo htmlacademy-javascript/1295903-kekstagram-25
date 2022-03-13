@@ -1,11 +1,11 @@
-import {generatePhotos} from './data.js';
+const picturesBlock = document.querySelector('.pictures');
 import {openUserModal} from './user-modal.js';
 
-const picturesBlock = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const photos = generatePhotos();
 
-const picturesBlockFragment = document.createDocumentFragment();
+const renderPhotos = (photos) => {
+  const picturesBlockFragment = document.createDocumentFragment();
 
 photos.forEach((photo) => {
   const {url, likes, comments} = photo;
@@ -19,4 +19,7 @@ photos.forEach((photo) => {
   picturesBlockFragment.appendChild(pictureElement);
 });
 
-picturesBlock.appendChild(picturesBlockFragment);
+  picturesBlock.appendChild(picturesBlockFragment);
+};
+
+export {renderPhotos};
