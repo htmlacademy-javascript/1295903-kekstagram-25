@@ -669,11 +669,14 @@ main {
   border: none;
 }
 
+.form__field:not(:last-child) {
+  margin-bottom: 20px;
+}
+
 .text__hashtags {
   width: 450px;
 
   margin: 0 auto;
-  margin-bottom: 20px;
   padding: 5px 10px;
 
   font-family: "Open Sans", "Arial", sans-serif;
