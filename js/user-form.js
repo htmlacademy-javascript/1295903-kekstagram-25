@@ -32,29 +32,23 @@ const clearForm = () => {
 };
 
 const validateHashtags = (value) => {
-  const hashtags = value.split(' ');
+  const hashtags = value.toLowerCase().trim().split(/\s+/);
   const uniqueHashtags = [];
-  let wasError = false;
   const re = /^#[A-Za-zА-Яа-яЕё0-9]{1,19}$/;
 
-  for (let i = 0; i < hashtags.length; i++) {
-    if (!hashtags[i]) {
-      continue;
-    }
-
-    if (uniqueHashtags.indexOf(hashtags[i]) !== -1) {
+  for (const hashtag of hashtags) {
+    if (uniqueHashtags.includes(hashtag)) {
       return false;
     }
 
-    if (!re.test(hashtags[i])) {
-      wasError = true;
-      break;
+    if (!re.test(hashtag)) {
+      return false;
     }
 
-    uniqueHashtags.push(hashtags[i].toLowerCase());
+    uniqueHashtags.push(hashtag);
   }
 
-  return !wasError && uniqueHashtags.length <= 5;
+  return uniqueHashtags.length <= 5;
 };
 
 const validateComment = (value) => isCorrectLength(value, 140);
