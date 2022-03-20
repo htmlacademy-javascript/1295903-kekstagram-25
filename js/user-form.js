@@ -32,6 +32,10 @@ const clearForm = () => {
 };
 
 const validateHashtags = (value) => {
+  if (!value) {
+    return true;
+  }
+
   const hashtags = value.toLowerCase().trim().split(/\s+/);
   const uniqueHashtags = [];
   const re = /^#[A-Za-zА-Яа-яЕё0-9]{1,19}$/;
@@ -75,13 +79,9 @@ const initForm = () => {
   hashtagsField.addEventListener('keydown', onFormFieldKeydown);
   commentField.addEventListener('keydown', onFormFieldKeydown);
 
-  loadPhotoInput.addEventListener('change', () => {
-    openForm();
-  });
+  loadPhotoInput.addEventListener('change', openForm);
 
-  userModalCloseElement.addEventListener('click', () => {
-    closeForm();
-  });
+  userModalCloseElement.addEventListener('click', closeForm);
 
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
