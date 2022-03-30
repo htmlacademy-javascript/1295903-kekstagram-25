@@ -54,7 +54,7 @@ const createPhoto = (index) => ({
   url: `photos/${index + 1}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomNum(15, 200),
-  comments: makeArray(getRandomNum(1,10), (i) => createComment(index, i))
+  comments: makeArray(getRandomNum(1,30), (i) => createComment(index, i))
 });
 
 const generatePhotos = () => makeArray(25, createPhoto);
