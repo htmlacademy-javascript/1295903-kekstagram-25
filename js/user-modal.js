@@ -12,8 +12,6 @@ const onPopupEscKeydown = (evt) => {
 };
 
 function openUserModal (photo) {
-  document.querySelector('.social__comment-count').classList.add('hidden');
-  document.querySelector('.comments-loader').classList.add('hidden');
   document.body.classList.add('modal-open');
 
   userModalElement.classList.remove('hidden');
