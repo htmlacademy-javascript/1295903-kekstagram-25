@@ -23,7 +23,7 @@ const loadComments = () => {
 
     commentPictureElement.src = avatar;
     commentPictureElement.setAttribute('alt', name);
-    commentElement.querySelector('.social__text').innerHTML = message;
+    commentElement.querySelector('.social__text').innerText = message;
 
     commentsBlockFragment.appendChild(commentElement);
 
