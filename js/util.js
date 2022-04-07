@@ -24,4 +24,19 @@ const getRandomArrayElement = (elements) => elements[getRandomNum(0, elements.le
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomNum, isCorrectLength, makeArray, getRandomArrayElement, isEscapeKey};
+const showAlert = (message) => {
+  const alertTemplate = document.querySelector('#data-error').content.querySelector('.error');
+  const alertContainer = alertTemplate.cloneNode(true);
+  const alertTextContainer = alertContainer.querySelector('.error__title');
+  const ALERT_SHOW_TIME = 5000;
+
+  alertTextContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+export {getRandomNum, isCorrectLength, makeArray, getRandomArrayElement, isEscapeKey, showAlert};

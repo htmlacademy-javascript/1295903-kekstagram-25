@@ -104,6 +104,8 @@ const initEffects = () => {
 };
 
 const disposeEffects = () => {
+  const defaultCheckedRadio = document.querySelector('#effect-none');
+  defaultCheckedRadio.checked = true;
   currentSelectedEffect = 'none';
   imagePreview.style.removeProperty('filter');
   imagePreview.className = '';
