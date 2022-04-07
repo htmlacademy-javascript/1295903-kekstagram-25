@@ -1,6 +1,7 @@
 import {isCorrectLength, isEscapeKey} from './util.js';
 import {initScaleControl, disposeScaleControl} from './scale.js';
 import {initEffects, disposeEffects} from './effect.js';
+import {sendData} from './api.js';
 
 const form = document.querySelector('#upload-select-image');
 const loadPhotoInput = document.querySelector('#upload-file');
@@ -8,6 +9,7 @@ const userModalCloseElement = document.querySelector('#upload-cancel');
 const loadPhotoOverlay = document.querySelector('.img-upload__overlay');
 const hashtagsField = form.querySelector('.text__hashtags');
 const commentField = form.querySelector('.text__description');
+const submitButton = form.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(form, {
   classTo: 'form__field',
@@ -22,8 +24,36 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
+const onMessageEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    hideMessage();
+  }
+};
+
 const onFormFieldKeydown = (evt) => {
   evt.stopPropagation();
+};
+
+const onMessageBlockClick = (evt) => {
+  const errorMessage = document.querySelector('.error');
+  const successMessage = document.querySelector('.success');
+  let prefix = '';
+
+  if (errorMessage) {
+    prefix = 'error';
+  }
+
+  if (successMessage) {
+    prefix = 'success';
+  }
+  const innerMessageBlock = document.querySelector(`.${prefix}__inner`);
+
+  if (innerMessageBlock.contains(evt.target)) {
+    return;
+  }
+
+  hideMessage();
 };
 
 const clearForm = () => {
@@ -78,6 +108,89 @@ function closeForm() {
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
+function hideMessage() {
+  const errorMessage = document.querySelector('.error');
+  const successMessage = document.querySelector('.success');
+
+  if (errorMessage) {
+    document.body.removeChild(errorMessage);
+  }
+
+  if (successMessage) {
+    document.body.removeChild(successMessage);
+  }
+
+  document.removeEventListener('keydown', onMessageEscKeydown);
+}
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const showSuccessMessage = () => {
+  const messageTemplate = document.querySelector('#success').content.querySelector('.success');
+  const messageElement = messageTemplate.cloneNode(true);
+  const messageButtonElement = messageElement.querySelector('.success__button');
+
+  document.body.appendChild(messageElement);
+
+  messageButtonElement.addEventListener('click', hideMessage);
+  document.addEventListener('keydown', onMessageEscKeydown);
+  messageElement.addEventListener('click', onMessageBlockClick);
+};
+
+const showErrorMessage = () => {
+  const messageTemplate = document.querySelector('#error').content.querySelector('.error');
+  const messageElement = messageTemplate.cloneNode(true);
+  const messageButtonElement = messageElement.querySelector('.error__button');
+
+  document.body.appendChild(messageElement);
+
+  messageButtonElement.addEventListener('click', hideMessage);
+  document.addEventListener('keydown', onMessageEscKeydown);
+  messageElement.addEventListener('click', onMessageBlockClick);
+};
+
+const onSuccessUserFormSend = () => {
+  closeForm();
+  showSuccessMessage();
+};
+
+const onFailUserFormSend = () => {
+  closeForm();
+  showErrorMessage();
+};
+
+const setUserFormSubmit = (onSuccess, onFail) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+
+    if (!isValid) {
+      return;
+    }
+
+    blockSubmitButton();
+    sendData(
+      () => {
+        onSuccess();
+        unblockSubmitButton();
+      },
+      () => {
+        onFail();
+        unblockSubmitButton();
+      },
+      new FormData(evt.target),
+    );
+  });
+};
+
 const initForm = () => {
   pristine.addValidator(hashtagsField, validateHashtags,  'Некорректные хештеги');
   pristine.addValidator(commentField, validateComment,  'Длина комментария не более 140 символов');
@@ -88,11 +201,7 @@ const initForm = () => {
   loadPhotoInput.addEventListener('change', openForm);
 
   userModalCloseElement.addEventListener('click', closeForm);
-
-  form.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    pristine.validate();
-  });
+  setUserFormSubmit(onSuccessUserFormSend, onFailUserFormSend);
 };
 
 export {initForm};
