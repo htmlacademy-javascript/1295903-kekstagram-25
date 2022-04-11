@@ -2,6 +2,7 @@ import {isCorrectLength, isEscapeKey} from './util.js';
 import {initScaleControl, disposeScaleControl} from './scale.js';
 import {initEffects, disposeEffects} from './effect.js';
 import {sendData} from './api.js';
+import {clearFormPhoto, loadFormPhoto} from './form-photo.js';
 
 const form = document.querySelector('#upload-select-image');
 const loadPhotoInput = document.querySelector('#upload-file');
@@ -92,6 +93,7 @@ const validateComment = (value) => isCorrectLength(value, 140);
 function openForm() {
   loadPhotoOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  loadFormPhoto();
   initScaleControl();
   initEffects();
 
@@ -102,6 +104,7 @@ function closeForm() {
   loadPhotoOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   clearForm();
+  clearFormPhoto();
   disposeScaleControl();
   disposeEffects();
 
