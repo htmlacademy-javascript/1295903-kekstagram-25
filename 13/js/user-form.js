@@ -104,7 +104,7 @@ function closeForm() {
   loadPhotoOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   clearForm();
-  clearFormPhoto()
+  clearFormPhoto();
   disposeScaleControl();
   disposeEffects();
 
