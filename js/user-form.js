@@ -12,6 +12,12 @@ const hashtagsField = form.querySelector('.text__hashtags');
 const commentField = form.querySelector('.text__description');
 const submitButton = form.querySelector('.img-upload__submit');
 
+const MAX_COMMENT_LENGTH = 140;
+const Error = {
+  INVALID_LENGTH: 'Длина комментария не более 140 символов',
+  INVALID_HASHTAGS: 'Некорректные хештеги'
+};
+
 const pristine = new Pristine(form, {
   classTo: 'form__field',
   errorTextParent: 'form__field',
@@ -88,7 +94,7 @@ const validateHashtags = (value) => {
   return uniqueHashtags.length <= 5;
 };
 
-const validateComment = (value) => isCorrectLength(value, 140);
+const validateComment = (value) => isCorrectLength(value, MAX_COMMENT_LENGTH);
 
 function openForm() {
   loadPhotoOverlay.classList.remove('hidden');
@@ -97,6 +103,8 @@ function openForm() {
   initScaleControl();
   initEffects();
 
+  hashtagsField.addEventListener('keydown', onFormFieldKeydown);
+  commentField.addEventListener('keydown', onFormFieldKeydown);
   document.addEventListener('keydown', onPopupEscKeydown);
 }
 
@@ -108,6 +116,8 @@ function closeForm() {
   disposeScaleControl();
   disposeEffects();
 
+  hashtagsField.removeEventListener('keydown', onFormFieldKeydown);
+  commentField.removeEventListener('keydown', onFormFieldKeydown);
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
@@ -195,11 +205,8 @@ const setUserFormSubmit = (onSuccess, onFail) => {
 };
 
 const initForm = () => {
-  pristine.addValidator(hashtagsField, validateHashtags,  'Некорректные хештеги');
-  pristine.addValidator(commentField, validateComment,  'Длина комментария не более 140 символов');
-
-  hashtagsField.addEventListener('keydown', onFormFieldKeydown);
-  commentField.addEventListener('keydown', onFormFieldKeydown);
+  pristine.addValidator(hashtagsField, validateHashtags,  Error.INVALID_HASHTAGS);
+  pristine.addValidator(commentField, validateComment,  Error.INVALID_LENGTH);
 
   loadPhotoInput.addEventListener('change', openForm);
 

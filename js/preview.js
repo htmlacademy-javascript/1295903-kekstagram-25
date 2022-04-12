@@ -3,17 +3,21 @@ import {getRandomNum} from './util.js';
 
 const picturesBlock = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-let imagesCount = 25;
+
+const DEFAULT_IMAGES_COUNT = 25;
+const RANDOM_IMAGES_COUNT = 10;
+
+let imagesCount = DEFAULT_IMAGES_COUNT;
 
 const sortPhotos = (photoA, photoB) => {
   const activeFilter = document.querySelector('.img-filters__button--active').id;
-  imagesCount = 25;
+  imagesCount = DEFAULT_IMAGES_COUNT;
 
   switch (activeFilter) {
     case 'filter-discussed':
       return photoB.comments.length - photoA.comments.length;
     case 'filter-random':
-      imagesCount = 10;
+      imagesCount = RANDOM_IMAGES_COUNT;
       return getRandomNum(1, 10) - getRandomNum(1, 10);
     case 'filter-default':
     default:

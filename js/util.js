@@ -18,10 +18,6 @@ const getRandomNum = (from, to) => {
 
 const isCorrectLength = (str, maxLength) => str.length <= maxLength;
 
-const makeArray = (length, callback) => Array.from({length: length}, (_, i) => callback(i));
-
-const getRandomArrayElement = (elements) => elements[getRandomNum(0, elements.length - 1)];
-
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const showAlert = (message) => {
@@ -39,7 +35,9 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const debounce = (callback, timeoutDelay = 500) => {
+const DEFAULT_DELAY = 500;
+
+const debounce = (callback, timeoutDelay = DEFAULT_DELAY) => {
   let timeoutId;
 
   return (...rest) => {
@@ -48,4 +46,4 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {getRandomNum, isCorrectLength, makeArray, getRandomArrayElement, isEscapeKey, showAlert, debounce};
+export {getRandomNum, isCorrectLength, isEscapeKey, showAlert, debounce};
