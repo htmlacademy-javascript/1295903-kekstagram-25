@@ -6,10 +6,11 @@ const imagePreview = document.querySelector('.img-upload__preview img');
 const SCALE_STEP = 25;
 const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
+const SCALE_VALUE_MULTIPLIER = 0.01;
 
 const setScaleValue = (value) => {
   scaleControlValue.value = value;
-  imagePreview.style.transform = `scale(${value * 0.01})`;
+  imagePreview.style.transform = `scale(${value * SCALE_VALUE_MULTIPLIER})`;
 };
 
 const getScaleValue = () => parseInt(scaleControlValue.value, 10);
